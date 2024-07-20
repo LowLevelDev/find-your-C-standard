@@ -1,19 +1,29 @@
 #include <stdio.h>
 
-int main() {
-    #ifdef __cplusplus
-        printf("C++\n");
-    #else
-        printf("C\n");
-    #endif
-    
-    #ifdef __STDC_VERSION__
-        printf("C-standard-version: %ld\n", __STDC_VERSION__);
-    #else
-        printf("C-standard-version: Pre-ANSI C\n");
-    #endif
-    
-    return 0;
-}
+#ifdef __cplusplus
+#define language "C++"
+#else
+#define language "C"
+#endif
 
-// the __STDC_VERSION__ macro is defined in C99 AND is NOT FOR C++ environments(most)
+#ifdef __STDC_VERSION__
+#if __STDC_VERSION__ >= 201710L
+#define C_VERSION "C17"
+#elif __STDC_VERSION__ >= 201112L
+#define C_VERSION "C11"
+#elif __STDC_VERSION__ >= 199901L
+#define C_VERSION "C99"
+#else
+#define C_VERSION "Pre-ANSI C"
+#endif
+#else
+#define C_VERSION "Pre-ANSI C"
+#endif
+
+int main()
+{
+  printf("%s\n", language);
+  printf("C-standard-version: %s\n", C_VERSION);
+
+  return 0;
+}
